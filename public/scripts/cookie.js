@@ -57,7 +57,8 @@ const toISOFormat = (date) => {
 
 const shouldOverwrite = (new_utm_data, current_utm_data) => {
   // If we don't have old utm data, the utm_source field is enough for new utm data
-  if (!current_utm_data && new_utm_data.utm_source !== "null") {
+  const valid_new_utm_source = new_utm_data.utm_source && new_utm_data.utm_source !== "null"
+  if (!current_utm_data && valid_new_utm_source) {
     return true;
   }
 
