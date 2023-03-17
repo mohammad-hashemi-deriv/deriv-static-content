@@ -10,6 +10,7 @@ const getDomain = () => {
 };
 
 const eraseCookie = (name) => {
+  console.log('L13')
   document.cookie = `${name}=; Max-Age=-99999999; domain=${getDomain()}; path=/;`;
 };
 
@@ -59,6 +60,7 @@ const shouldOverwrite = (new_utm_data, current_utm_data) => {
   // If we don't have old utm data, the utm_source field is enough for new utm data
   const valid_new_utm_source = new_utm_data.utm_source && new_utm_data.utm_source !== "null"
   if (!current_utm_data && valid_new_utm_source) {
+    console.log('L63')
     return true;
   }
 
@@ -68,6 +70,7 @@ const shouldOverwrite = (new_utm_data, current_utm_data) => {
     (field) => new_utm_data[field] !== "null"
   );
   if (has_new_required_fields) {
+    console.log('L73')
     return true;
   }
 
@@ -99,11 +102,12 @@ const shouldOverwrite = (new_utm_data, current_utm_data) => {
 
   // If the user comes to the site for the first time without any URL params
   // Only set the utm_source to referrer if the user does not have utm_data cookies stored
-  // if (!current_utm_data?.utm_source) {
-  //   utm_data = {
-  //     utm_source: document.referrer ? document.referrer : "null",
-  //   };
-  // }
+  if (!current_utm_data?.utm_source) {
+    console.log('L106')
+    utm_data = {
+      utm_source: document.referrer ? document.referrer : "null",
+    };
+  }
 
   // If the user has any new UTM params, store them
   utm_fields.forEach((field) => {
@@ -116,6 +120,7 @@ const shouldOverwrite = (new_utm_data, current_utm_data) => {
   });
 
   if (shouldOverwrite(utm_data, current_utm_data)) {
+    console.log('L123')
     eraseCookie("affiliate_tracking");
     eraseCookie("utm_data");
 
